@@ -11,12 +11,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.EnumType;
+
 import com.airline.customer.data.enums.CustomerType;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
@@ -26,18 +29,21 @@ public class Customer {
     @Id
     private String id;
      
-    @NonNull 
+    @NotBlank 
     private String firstName;
-    @NonNull
+    @NotBlank
     private String lastName;
-    @NonNull
+    @NotBlank
     private String address;
-    @NonNull
-    private String email;
-    @NonNull
+    @NotBlank
+    @Pattern(regexp = "(^$|[0-9]{10})")
     private String phoneNumber;
+    @NotBlank
+    @Email(message = "Email is not valid")
+    private String email;
 
     // Store Enums as Strings in the database
+    @NotBlank
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;
 
@@ -50,4 +56,16 @@ public class Customer {
     private List<Reservation> reservations;
     private Payment payment;
     private List<Feedback> feedbacks;
+
+    // Could use lombok.NonNull on these fields, but I find it awkward to use both
+    // @NonNull and @NotBlank in the sense of validation
+    public Customer(String id, String firstName, String lastName, String address, String phoneNumber, String email, CustomerType type) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.customerType = type;
+    }
 }

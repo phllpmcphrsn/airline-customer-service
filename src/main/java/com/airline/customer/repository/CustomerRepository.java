@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface CustomerRepository extends MongoRepository<Customer, String> {
 
     public Optional<Customer> findById(String id);
-    public void save(Customer customer);
+    public Customer save(Customer customer);
     public void deleteById(String id);
     public void delete(Customer customer);
 

@@ -6,9 +6,8 @@ import com.airline.customer.data.model.Customer;
 import com.airline.customer.exceptions.CustomerNotFoundException;
 
 public interface CustomerService {
-	public void createCustomer(Customer customer); 
-	public Customer getCustomerByFirstName(String firstname); 
+	public Customer createCustomer(Customer customer); 
 	public List<Customer> getAllCustomers();
-	public void updateCustomer(Customer customer); 
+	public Customer updateCustomer(Customer customer) throws CustomerNotFoundException; 
 	public void deleteCustomer(String id) throws CustomerNotFoundException; 
 }
