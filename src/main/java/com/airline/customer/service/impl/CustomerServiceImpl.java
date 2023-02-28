@@ -35,6 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
         // before performing the below
         if(customer.getCustomerType() == CustomerType.MEMBER) {
             milesService.createMiles(customer);
+            log.info(null);
         }
         return save(customer);        
     }
@@ -64,7 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
     }   
 
 
-    private Optional<Customer> findById(String id) throws CustomerNotFoundException {
+    public Optional<Customer> findById(String id) throws CustomerNotFoundException {
         Optional<Customer> customer = customerRepository.findById(id);
         if (!customer.isPresent()) {
             throw new CustomerNotFoundException(id);

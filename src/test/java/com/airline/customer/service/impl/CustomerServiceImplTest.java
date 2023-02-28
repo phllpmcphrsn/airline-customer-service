@@ -1,5 +1,6 @@
 package com.airline.customer.service.impl;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,7 +10,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,15 +17,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.airline.customer.data.enums.CustomerType;
 import com.airline.customer.data.model.Customer;
-import com.airline.customer.data.model.Feedback;
 import com.airline.customer.data.model.Miles;
-import com.airline.customer.data.model.Payment;
-import com.airline.customer.data.model.Reservation;
 import com.airline.customer.exceptions.CustomerNotFoundException;
 import com.airline.customer.repository.CustomerRepository;
 import com.airline.customer.repository.MilesRepository;
@@ -71,8 +67,15 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    void testDeleteCustomer() {
+    void testDeleteCustomer_SuccessWithCustomers() {
+        Customer customer = new Customer("1", "test", "tester", "1234 ome address, here, andthere 11111", "123-123-1234", "test@email.com", CustomerType.MEMBER);
+        Optional<Customer> optional = Optional.of(customer);
+        
+        when(customerRepository.findById(anyString())).thenReturn(optional);
 
+        List<Miles> miles = List.of(new Miles());
+        when(milesRepository.findByCustomer(any(Customer.class))).thenReturn(miles);
+        assertDoesNotThrow(() -> customerServiceImpl.deleteCustomer(customer.getId()));
     }
 
     @Test
