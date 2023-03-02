@@ -3,7 +3,7 @@ package com.airline.customer.config;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
@@ -13,11 +13,10 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Configuration
 @ConfigurationProperties("spring.data.mongodb")
-@ComponentScan (basePackages = {"com.airline"})
+@ComponentScan (basePackages = {"com.airline.cusomter"})
 @EnableMongoRepositories(basePackages = "com.airline.customer")
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
@@ -39,7 +38,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     }
  
     @Override
-    public Collection getMappingBasePackages() {
+    public Collection<String> getMappingBasePackages() {
         return Collections.singleton("com.airline");
     }
 }

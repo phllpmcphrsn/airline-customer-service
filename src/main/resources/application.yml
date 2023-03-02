@@ -3,7 +3,7 @@ app:
 spring:
   data:
     mongodb:
-      uri: "mongodb://user:secret@mongoserver1.example.com:27017,mongoserver2.example.com:23456/test"
+      uri: "mongodb://user:secret@mongoserver1.example.com:27017/customer,mongoserver2.example.com:23456/test"
 swagger:
   name: Customer Microservice API
   api:

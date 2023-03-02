@@ -9,7 +9,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,15 +16,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.airline.customer.data.enums.CustomerType;
 import com.airline.customer.data.model.Customer;
-import com.airline.customer.data.model.Feedback;
-import com.airline.customer.data.model.Miles;
-import com.airline.customer.data.model.Payment;
-import com.airline.customer.data.model.Reservation;
 import com.airline.customer.exceptions.CustomerNotFoundException;
 import com.airline.customer.repository.CustomerRepository;
 import com.airline.customer.repository.MilesRepository;
@@ -98,7 +92,7 @@ public class CustomerServiceImplTest {
         
         when(customerRepository.findById(anyString())).thenReturn(optional);
         
-        Customer updatedCustomer = new Customer("1", "new", "name", "1234 ome address, here, andthere 11111", "123-123-1234", "test@email.com", CustomerType.MEMBER);
+        Customer updatedCustomer = new Customer("1", "new", "name", "1234 ome address, here, andthere 11111", "123-123-2345", "test@email.com", CustomerType.MEMBER);
             
         when(customerServiceImpl.save(any(Customer.class))).thenReturn(updatedCustomer);
         Customer result = customerServiceImpl.updateCustomer(updatedCustomer);
