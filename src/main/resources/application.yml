@@ -1,9 +1,11 @@
 app:
     endpoint: /api/customer
+    port: 8080
 spring:
   data:
     mongodb:
-      uri: "mongodb://user:secret@mongoserver1.example.com:27017/customer,mongoserver2.example.com:23456/test"
+      uri: "mongodb://localhost:27017"
+      database: "airline"
 swagger:
   name: Customer Microservice API
   api:
