@@ -7,10 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.airline.customer.data.enums.CustomerType;
 import com.airline.customer.data.model.Customer;
-import com.airline.customer.data.model.Miles;
 import com.airline.customer.exceptions.CustomerNotFoundException;
 import com.airline.customer.repository.CustomerRepository;
-import com.airline.customer.repository.MilesRepository;
 import com.airline.customer.service.CustomerService;
 import com.airline.customer.service.MilesService;
 
@@ -26,18 +24,22 @@ public class CustomerServiceImpl implements CustomerService {
     // no need for @Autowired - helps with testing since
     // we won't have to worry about Spring loading
     private final CustomerRepository customerRepository;
-    private final MilesRepository milesRepository;
     private MilesService milesService;
 
     @Override
     public Customer createCustomer(Customer customer) {
         // could use try-catch to check if customer exists 
         // before performing the below
+        
+        // what if a former GUEST becomes a MEMBER?
+        
+        // may have to do this in the Controller actually
+        // CustomerService won't have the info needed for a 
+        // Miles object
         if(customer.getCustomerType() == CustomerType.MEMBER) {
             milesService.createMiles(customer);
-            log.info(null);
         }
-        return save(customer);        
+        return customerRepository.insert(customer);        
     }
 
     @Override
@@ -47,23 +49,18 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer updateCustomer(Customer customer) throws CustomerNotFoundException {
-        Optional<Customer> customerOptional = findById(customer.getId());
-        return save(customerOptional.get());        
+        Customer updatedCustomer = findById(customer.getId()).get();
+        return customerRepository.save(updatedCustomer);        
     }
 
     @Override
     public void deleteCustomer(String id) throws CustomerNotFoundException {
-        Optional<Customer> customer = findById(id);
-        List<Miles> miles = milesRepository.findByCustomer(customer.get());
-        milesRepository.deleteAll(miles);
-        customerRepository.delete(customer.get());
+        Customer customer = findById(id).get();
+        if(customer.getCustomerType() == CustomerType.MEMBER) {
+            milesService.deleteAllMiles(customer.getMiles());
+        }
+        customerRepository.delete(customer);
     }
-    
-
-    Customer save(Customer customer) {
-        return customerRepository.save(customer);
-    }   
-
 
     public Optional<Customer> findById(String id) throws CustomerNotFoundException {
         Optional<Customer> customer = customerRepository.findById(id);
@@ -71,6 +68,6 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerNotFoundException(id);
         }
         return customer;
-      }
+    }
       
 }

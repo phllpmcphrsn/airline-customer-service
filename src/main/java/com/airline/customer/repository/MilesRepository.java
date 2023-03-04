@@ -11,8 +11,11 @@ import com.airline.customer.data.model.Miles;
 
 @Repository
 public interface MilesRepository extends MongoRepository<Miles, String> {
-    List<Miles> findByCustomer(Optional<Customer> customer);
+    List<Miles> findByCustomer(String string);
+    List<Miles> getMiles(Customer customer, String milesId);
 
+    void deleteMiles(Miles miles);
+    
     void deleteAll(List<Miles> miles);
 
     List<Miles> findByCustomer(Customer customer);

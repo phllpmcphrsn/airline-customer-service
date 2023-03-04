@@ -47,7 +47,7 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;
 
-    // We'd like to track miles on a per flight-basis for
+    // We'd like to track miles on a per-flight basis for
     // better history/tracking
     @OneToMany(mappedBy = "customer")
     private List<Miles> miles;
