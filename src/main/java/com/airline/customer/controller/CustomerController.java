@@ -1,5 +1,6 @@
 package com.airline.customer.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,12 @@ public class CustomerController {
     public ResponseEntity<Customer> getCustomerById(@PathVariable("id") String id) throws CustomerNotFoundException {
         Optional<Customer>  customer = customerService.findById(id);
         return ResponseEntity.ok().body(customer.get());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Customer>> getAllCustomers() {
+        List<Customer> customers = customerService.getAllCustomers();
+        return ResponseEntity.ok().body(customers);
     }
 
     @PostMapping
