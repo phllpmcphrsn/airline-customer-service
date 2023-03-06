@@ -17,7 +17,7 @@ public class MilesServiceImpl implements MilesService {
     private final MilesRepository milesRepository;
     
     @Override
-    public Miles createMiles(Customer customer) {
+    public List<Miles> createMiles(Customer customer) {
         // could use try-catch to check if customer exists 
         // before performing the below
 
@@ -25,10 +25,8 @@ public class MilesServiceImpl implements MilesService {
         //     throw new IllegalCustomerType("Only members can create miles. Customer type: ", customer.getCustomerType());
         //     log.error("Only members can create miles. Customer type: {}", customer.getCustomerType());
         // }
-        Miles miles = new Miles();
-        miles.set
 
-        return milesRepository.insert(miles); 
+        return milesRepository.insert(customer.getMiles()); 
     }
 
     @Override

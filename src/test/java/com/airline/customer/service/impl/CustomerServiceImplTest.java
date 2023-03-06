@@ -24,7 +24,7 @@ import com.airline.customer.data.model.Customer;
 import com.airline.customer.data.model.Miles;
 import com.airline.customer.exceptions.CustomerNotFoundException;
 import com.airline.customer.repository.CustomerRepository;
-import com.airline.customer.repository.MilesRepository;
+import com.airline.customer.service.MilesService;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceImplTest {
@@ -33,7 +33,7 @@ public class CustomerServiceImplTest {
     // private CustomerRepository customerRepository = Mockito.mock(CustomerRepository.class);
 
     @Mock
-    private MilesRepository milesRepository;
+    private MilesService milesService;
 
     @Mock
     private CustomerRepository customerRepository;
@@ -46,13 +46,14 @@ public class CustomerServiceImplTest {
 
     @BeforeEach
     void initService() {
-        customerServiceImpl = new CustomerServiceImpl(customerRepository, milesRepository);
+        customerServiceImpl = new CustomerServiceImpl(customerRepository);
     }
 
     @Test
     void testCreateCustomer() {
         Customer guest = new Customer("1", "test", "test", address, phoneNumber, email, CustomerType.GUEST);
-        when(customerServiceImpl.save(any(Customer.class))).thenReturn(guest);
+        Miles miles = new Miles();
+        when(milesService.createMiles(any(Customer.class))).thenReturn(List.of(miles));
         Customer result = customerServiceImpl.createCustomer(guest);
         assertNotNull(result);
         assertEquals(guest.getFirstName(), result.getFirstName());
@@ -103,7 +104,6 @@ public class CustomerServiceImplTest {
         
         Customer updatedCustomer = new Customer("1", "new", "name", "1234 ome address, here, andthere 11111", "123-123-2345", "test@email.com", CustomerType.MEMBER);
             
-        when(customerServiceImpl.save(any(Customer.class))).thenReturn(updatedCustomer);
         Customer result = customerServiceImpl.updateCustomer(updatedCustomer);
         
         // ensure updates occurred
