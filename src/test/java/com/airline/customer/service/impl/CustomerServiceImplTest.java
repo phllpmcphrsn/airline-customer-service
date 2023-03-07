@@ -67,6 +67,9 @@ public class CustomerServiceImplTest {
         // Customer member = new Customer("1", "test", "test", address, phoneNumber, email, CustomerType.MEMBER);
     }
 
+    // need to think about the two cases:
+    // 1. a customer without any miles associated with them (i.e. just signed up without travel)
+    // 2. a customer with miles
     @Test
     void testDeleteCustomer_SuccessWithCustomers() {
         Customer customer = new Customer("1", "test", "tester", "1234 ome address, here, andthere 11111", "123-123-1234", "test@email.com", CustomerType.MEMBER);
@@ -74,8 +77,7 @@ public class CustomerServiceImplTest {
         
         when(customerRepository.findById(anyString())).thenReturn(optional);
 
-        List<Miles> miles = List.of(new Miles());
-        when(milesRepository.findByCustomer(any(Customer.class))).thenReturn(miles);
+        customer.setMiles(List.of(new Miles()));
         assertDoesNotThrow(() -> customerServiceImpl.deleteCustomer(customer.getId()));
     }
 
