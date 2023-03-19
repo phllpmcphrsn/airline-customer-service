@@ -6,9 +6,10 @@ import com.airline.customer.data.model.Customer;
 import com.airline.customer.data.model.Miles;
 
 public interface MilesService {
-    // public Miles getMiles(Customer customer);
+    public List<Miles> getMilesByCustomerId(String customerId);
+    public Miles getMiles(String milesId);
     public List<Miles> createMiles(Customer customer);
     public Miles updateMiles(Miles miles);
     public void deleteMiles(Miles miles);
-    public void deleteAllMiles(List<Miles> miles);
+    public void deleteAllMiles(String customerId);
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.airline.customer.data.model.Customer;
-import com.airline.customer.exceptions.CustomerNotFoundException;
+import com.airline.customer.exceptions.customer.CustomerNotFoundException;
 import com.airline.customer.service.CustomerService;
 
 import jakarta.validation.Valid;
@@ -49,7 +49,7 @@ public class CustomerController {
     @PutMapping("/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable("id") String id, @Valid @RequestBody Customer customer) throws CustomerNotFoundException {
         if (!customer.getId().equals(id)) {
-            throw new CustomerNotFoundException();
+            throw new ();
         }
         Customer updatedCustomer = customerService.updateCustomer(customer);
         return ResponseEntity.ok().body(updatedCustomer);

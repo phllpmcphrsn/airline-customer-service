@@ -1,4 +1,4 @@
-package com.airline.customer.exceptions;
+package com.airline.customer.exceptions.customer;
 
 import lombok.NoArgsConstructor;
 
@@ -9,5 +9,5 @@ public class CustomerNotFoundException extends RuntimeException {
     public CustomerNotFoundException(String customerId) {
       super("Customer not found with id: " + customerId);
     }
-  }
+}
   

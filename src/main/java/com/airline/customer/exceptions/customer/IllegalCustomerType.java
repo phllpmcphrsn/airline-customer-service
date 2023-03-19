@@ -1,4 +1,4 @@
-package com.airline.customer.exceptions;
+package com.airline.customer.exceptions.customer;
 
 import com.airline.customer.data.enums.CustomerType;
 

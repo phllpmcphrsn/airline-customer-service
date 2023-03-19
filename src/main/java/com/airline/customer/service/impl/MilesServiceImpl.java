@@ -1,11 +1,13 @@
 package com.airline.customer.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.airline.customer.data.model.Customer;
 import com.airline.customer.data.model.Miles;
+import com.airline.customer.exceptions.miles.MilesNotFoundException;
 import com.airline.customer.repository.MilesRepository;
 import com.airline.customer.service.MilesService;
 
@@ -24,9 +26,23 @@ public class MilesServiceImpl implements MilesService {
         // if(customer.getCustomerType() != CustomerType.MEMBER) {
         //     throw new IllegalCustomerType("Only members can create miles. Customer type: ", customer.getCustomerType());
         //     log.error("Only members can create miles. Customer type: {}", customer.getCustomerType());
-        // }
+        // } 
 
         return milesRepository.insert(customer.getMiles()); 
+    }
+
+    @Override
+    public Miles getMiles(String milesId) {
+        Optional<Miles> miles = milesRepository.findById(milesId);
+        if(!miles.isPresent()) {
+            throw new MilesNotFoundException(milesId);
+        }
+        return miles.get();
+    }
+
+    @Override
+    public List<Miles> getMilesByCustomerId(String customerId) {
+        return milesRepository.findByCustomerId(customerId);
     }
 
     @Override
@@ -40,8 +56,8 @@ public class MilesServiceImpl implements MilesService {
     }
 
     @Override
-    public void deleteAllMiles(List<Miles> miles) {
-        milesRepository.deleteAll(miles);
+    public void deleteAllMiles(String customerId) {
+        milesRepository.deleteByCustomerId(customerId);
     }
     
 }

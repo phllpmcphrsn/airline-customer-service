@@ -28,7 +28,9 @@ import lombok.NoArgsConstructor;
 public class Customer {
     @Id
     private String id;
-     
+    
+    private String uuid;
+    
     @NotBlank 
     private String firstName;
     @NotBlank

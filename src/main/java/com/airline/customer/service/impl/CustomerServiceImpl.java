@@ -7,16 +7,14 @@ import org.springframework.stereotype.Service;
 
 import com.airline.customer.data.enums.CustomerType;
 import com.airline.customer.data.model.Customer;
-import com.airline.customer.exceptions.CustomerNotFoundException;
+import com.airline.customer.exceptions.customer.CustomerNotFoundException;
 import com.airline.customer.repository.CustomerRepository;
 import com.airline.customer.service.CustomerService;
 import com.airline.customer.service.MilesService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@RequiredArgsConstructor
-@Slf4j
+@RequiredArgsConstructor  
 @Service
 public class CustomerServiceImpl implements CustomerService {
     
@@ -24,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
     // no need for @Autowired - helps with testing since
     // we won't have to worry about Spring loading
     private final CustomerRepository customerRepository;
-    private MilesService milesService;
+    private final MilesService milesService;
 
     @Override
     public Customer createCustomer(Customer customer) {
@@ -57,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomer(String id) throws CustomerNotFoundException {
         Customer customer = findById(id).get();
         if(customer.getCustomerType() == CustomerType.MEMBER) {
-            milesService.deleteAllMiles(customer.getMiles());
+            milesService.deleteAllMiles(customer.getId());
         }
         customerRepository.delete(customer);
     }

@@ -22,7 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.airline.customer.data.enums.CustomerType;
 import com.airline.customer.data.model.Customer;
 import com.airline.customer.data.model.Miles;
-import com.airline.customer.exceptions.CustomerNotFoundException;
+import com.airline.customer.exceptions.customer.CustomerNotFoundException;
 import com.airline.customer.repository.CustomerRepository;
 import com.airline.customer.service.MilesService;
 
@@ -46,14 +46,14 @@ public class CustomerServiceImplTest {
 
     @BeforeEach
     void initService() {
-        customerServiceImpl = new CustomerServiceImpl(customerRepository);
+        customerServiceImpl = new CustomerServiceImpl(customerRepository, milesService);
     }
 
     @Test
     void testCreateCustomer() {
         Customer guest = new Customer("1", "test", "test", address, phoneNumber, email, CustomerType.GUEST);
-        Miles miles = new Miles();
-        when(milesService.createMiles(any(Customer.class))).thenReturn(List.of(miles));
+        when(customerRepository.insert(any(Customer.class))).thenReturn(guest);
+
         Customer result = customerServiceImpl.createCustomer(guest);
         assertNotNull(result);
         assertEquals(guest.getFirstName(), result.getFirstName());
@@ -101,10 +101,10 @@ public class CustomerServiceImplTest {
     void testUpdateCustomer_Success() {
         Customer customer = new Customer("1", "test", "tester", "1234 ome address, here, andthere 11111", "123-123-1234", "test@email.com", CustomerType.MEMBER);
         Optional<Customer> optional = Optional.of(customer);
-        
         when(customerRepository.findById(anyString())).thenReturn(optional);
         
         Customer updatedCustomer = new Customer("1", "new", "name", "1234 ome address, here, andthere 11111", "123-123-2345", "test@email.com", CustomerType.MEMBER);
+        when(customerRepository.save(any(Customer.class))).thenReturn(updatedCustomer);
             
         Customer result = customerServiceImpl.updateCustomer(updatedCustomer);
         
